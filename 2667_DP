@@ -1,0 +1,105 @@
+#include<stdio.h>
+
+int map[25][25] = { 0, };
+int udlr[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };
+
+int totaldanji = 0;
+int mark = 2;
+int N;
+
+
+void swap(int *x, int *y)
+{
+	int tmp = *x;
+	*x = *y;
+	*y = tmp;
+}
+int checkinsquare(int x, int y)
+{
+	if (x < 0 || x >= N || y < 0 || y >= N)
+	{
+		return 0;
+	}
+	return 1;
+	//return (x >= 0 && x < N) && (y >= 0 && y < N);
+}
+
+void dfs(int a, int b)
+{
+	int i;
+	int updaterow;
+	int updatecol;
+	
+	map[a][b] = mark;
+	for (i = 0; i < 4; i++)
+	{
+		updaterow = a + udlr[i][0];
+		updatecol = b + udlr[i][1];
+		if (checkinsquare(updaterow, updatecol))
+		{
+			if (map[updaterow][updatecol] == 1)
+			{
+				//map[updaterow][updatecol] = mark;
+				dfs(updaterow, updatecol);
+			}
+		}
+	}
+}
+
+int main()
+{
+	int i,j;
+	int numberofeachdanji[313] = { 0, }; // (25*25)/2 - 1
+	scanf("%d", &N);
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			scanf("%1d", &map[i][j]);
+		}
+	}
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			if (map[i][j] == 1)
+			{
+				//map[i][j] = mark;
+				dfs(i, j);
+				mark++;
+				totaldanji++;
+			}
+		}
+	}
+	
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			if(map[i][j] >= 2) numberofeachdanji[map[i][j] - 2]++;
+		}
+	}
+	
+	int tmpindex;
+	for (i = 0; i < totaldanji - 1; i++)
+	{
+		tmpindex = i;
+		for (j = i+1; j < totaldanji; j++)
+		{
+			if (numberofeachdanji[j] < numberofeachdanji[tmpindex])
+			{
+				tmpindex = j;
+			}
+		}
+		if(tmpindex != i) swap(&numberofeachdanji[i], &numberofeachdanji[tmpindex]);
+	}
+
+	printf("%d\n", totaldanji);		//총 단지수 출력
+	for (i = 0; i < totaldanji; i++)
+	{
+		printf("%d\n", numberofeachdanji[i]);
+	}
+	
+	return 0;
+}
