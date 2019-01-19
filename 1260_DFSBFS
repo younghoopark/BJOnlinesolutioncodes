@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int graphs[1001][1001] = { 0, };
+int dfsvisited[1001] = { 0, };
+int bfsvisited[1001] = { 0, };
+int queue[1001] = { 0, };
+
+void dfs_(int v, int n);
+void bfs_(int v, int n);
+int main()
+{
+	int N, M, V;
+	int i;
+	scanf("%d %d %d", &N, &M, &V);
+
+	int x, y;
+	for (i = 0; i < M; i++) 
+	{
+		scanf("%d %d", &x, &y);
+		graphs[x][y] = 1;
+		graphs[y][x] = 1;
+	}
+
+	dfs_(V, N);
+	printf("\n");
+	bfs_(V, N);
+
+	return 0;
+}
+
+void dfs_(int v, int n)
+{
+	printf("%d ", v);
+	dfsvisited[v] = 1;
+	for (int i = 1; i <= n; i++)
+	{
+		if (graphs[v][i] == 1 && dfsvisited[i] != 1)
+		{
+			dfs_(i, n);
+		}
+	}
+	return;
+}
+
+void bfs_(int v, int n)
+{
+	int front = 0, rear = 0;
+	int pop;
+
+	printf("%d ", v);
+	bfsvisited[v] = 1;
+
+	queue[0] = v;
+	rear++;
+
+	while (front < rear)
+	{
+		pop = queue[front];
+		front++;
+		for (int i = 1; i <= n; i++)
+		{
+			if (graphs[pop][i] == 1 && bfsvisited[i] != 1)
+			{
+				queue[rear] = i;
+				rear++;
+				printf("%d ", i);
+				bfsvisited[i] = 1;
+			}
+		}
+	}
+	return;
+}
