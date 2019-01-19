@@ -1,0 +1,21 @@
+#include<stdio.h>
+
+long long mem[91] = { 0, };
+
+int main()
+{
+	int N;
+	int i;
+
+	mem[0] = 0;
+	mem[1] = 1;
+	mem[2] = 1;
+	scanf("%d", &N);
+	for (i = 3; i <= N; i++)
+	{
+		mem[i] = mem[i - 2] + mem[i - 1];
+	}
+	printf("%lld\n", mem[N]);
+	
+	return 0;
+}
