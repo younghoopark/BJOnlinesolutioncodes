@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<vector<int> > vec;          //2차원 vector 생성
+vector<int> ch[10010];
+bool visited[10010];                //방문했는지 안했는지
+int Table[2][10010];
+int *W;                            //각 마을의 사람수를저장하는 배열
+int CN;                            //마을의 수를 저장하는 변수
+
+int find(int a, int b);
+void dfs(int u);
+
+int main()
+{
+	int i;
+	int A, B;
+	memset(Table, -1, sizeof(Table));   //Table을 -1로 초기화
+
+	scanf("%d", &CN);      //마을의 개수를 입력받는다
+
+	W = (int*)malloc(sizeof(int) * (CN + 1));    //각 마을 인구수저장할배열 동적할당
+	for (i = 1; i < CN + 1; i++)
+		scanf("%d", &W[i]);
+
+	//입력으로부터 데이터를 읽어 벡터(2차원 Array)에 인접한 마을들끼리의 데이터를 저장
+	for (i = 0; i < CN + 1; i++) {
+		vector<int> elem;
+		vec.push_back(elem);
+	}
+	for (i = 0; i < CN - 1; i++) {
+		scanf("%d %d", &A, &B);
+		vec[A].push_back(B);
+		vec[B].push_back(A);
+	}
+	dfs(1);       //1부터 깊이우선 탐색 실행
+	printf("%d", find(0, 1));  //find로부터 리턴된 값을 출력
+
+}
+
+int find(int a, int b)   //우수마을로 선정된 마을들의 주민들의 수의 총 합을 구해 return해주는 재귀함수
+{
+	int tmp1 = 0;
+	int tmp2 = W[b];
+
+	if (Table[a][b] >= 0) return Table[a][b];
+
+	int i = 0, v;
+	while (i < ch[b].size()) {
+		v = ch[b][i];
+		tmp1 += find(0, v);   //자기자신을 포함하지 않을경우의 함수재귀호출
+		tmp2 += find(1, v);   //자기자신을 포함할 경우의 함수재귀호출
+		i++;
+	}
+	if (a == 0)
+		return Table[a][b] = max(tmp1, tmp2);
+	else
+		return Table[a][b] = tmp1;
+}
+
+void dfs(int u) //dfs(깊이우선탐색)을 통해 vector ch에 데이터 update
+{
+	int i, v;
+	visited[u] = true;       //방문한 vertex 의 visited를 true로 업데이트해줌으로써 방문한것임을 표시
+	for (i = 0; i < vec[u].size(); i++) {
+		v = vec[u][i];
+		if (visited[v] == false) {   //방문하지않았던 vertex 이면
+			ch[u].push_back(v);      //vector ch에 v data update
+			dfs(v);
+		}
+	}
+}
