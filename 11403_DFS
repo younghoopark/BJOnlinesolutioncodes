@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+
+int edge[100][100] = { 0, };
+int visited[100] = { 0, };
+int sol[100][100] = { 0, };
+
+void dfs(int a,int N)
+{
+	int i,j;
+	//visited[a] = 1;
+	for (i = 0; i < N; i++)
+	{
+		if (edge[a][i] && !visited[i])
+		{
+			visited[i] = 1;
+			dfs(i, N);
+		}
+	}
+	
+}
+
+int main()
+{
+	int i,j;
+	int N;
+	scanf("%d", &N);		//정점의 개수를 입력받는다
+	
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			scanf("%d", &edge[i][j]);
+		}
+	}
+
+	for (i = 0; i < N; i++)			//i번째 정점을 기준으로 DFS를 통해 방문된 vertex들(j)을 visited[j]=1로 업데이트 시켜놓고,그 인덱스 i,j를 이용해 sol업데이트
+	{
+		memset(visited, 0, sizeof(visited));
+		dfs(i, N);
+		
+		for (j = 0; j < N; j++)
+		{
+			if (visited[j] == 1)
+			{
+				sol[i][j] = 1;
+			}
+		}
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			printf("%d ", sol[i][j]);
+		}
+		printf("\n");
+	}
+
+
+	return 0;
+}
