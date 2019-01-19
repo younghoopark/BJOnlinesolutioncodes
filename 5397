@@ -1,0 +1,95 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct dbl *dbl_P;
+typedef struct dbl {
+ char data;
+ dbl_P lp, rp;
+}dbl;
+
+dbl *Alloc_dbl() {                       //dbl포인터타입 동적할당 후 초기화해주는 함수
+ dbl *tmp = NULL;
+ tmp = (dbl*)malloc(sizeof(dbl));
+ tmp->data = NULL;
+ tmp->lp = NULL;
+ tmp->rp = NULL;
+ return tmp;
+}
+
+void free_dbl(dbl *Q) {                  //dbl리스트 전체 다 free해주는 함수
+ dbl *tmp;
+ Q = Q->rp;
+ while (Q) {
+  tmp = Q;
+  Q = Q->rp;
+  free(tmp);
+ }
+}
+
+void print_PW(dbl **head) {
+ dbl *tmp = *head;
+ *head = (*head)->rp;
+ while (*head) {
+  printf("%c", (*head)->data);
+  *head = (*head)->rp;
+ }
+ printf("\n");
+ free_dbl(tmp);                            //리스트 free
+}
+
+void find_PW(dbl **PW) {
+ char c = 0;
+ dbl *head = *PW;
+ dbl *delnode;                             //c = '-' 일 경우 삭제시킬 노드를 가리키는 포인터변수 선언
+ dbl *tmp;
+ while (c != '\n') {
+  scanf("%c",&c);
+  if (c == '<') {
+   if ((*PW)->lp) {
+    (*PW) = (*PW)->lp;
+   }
+  }
+  else if (c == '>') {
+   if ((*PW)->rp) {
+    (*PW) = (*PW)->rp;
+   }
+  }
+  else if (c == '-') {
+   if ((*PW)->data != NULL) {
+    delnode = (*PW);
+    if ((*PW)->lp)
+     (*PW)->lp->rp = (*PW)->rp;
+    if ((*PW)->rp)
+     (*PW)->rp->lp = (*PW)->lp;
+    (*PW) = (*PW)->lp;
+    free(delnode);
+   }
+  }
+  else if(c != '\n') {                  //c가 < > -가 아닌 문자일경우 리스트에 추가해준다
+   tmp = Alloc_dbl();
+   tmp->data = c;
+   tmp->rp = (*PW)->rp;
+   if (tmp->rp)
+    tmp->rp->lp = tmp;
+   (*PW)->rp = tmp;
+   tmp->lp = (*PW);
+   (*PW) = tmp;
+  }
+ }
+ print_PW(&head);                        //암호출력
+}
+
+int main() {
+ dbl *PW = Alloc_dbl();                 //암호를 저장할 리스트의 헤드 PW선언
+ int Tnum;                               //테스트케이스의 개수를 입력받을 변수
+ int i;
+
+ scanf("%d", &Tnum);                   //테스트케이스의 개수를 입력받고
+ getchar();
+
+ for (i = 0; i < Tnum; i++) {
+  find_PW(&PW);
+  PW = Alloc_dbl();
+ }
+ return 0;
+} 
