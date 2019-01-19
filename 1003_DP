@@ -1,0 +1,45 @@
+#include<stdio.h>
+
+
+int numzero[41] = { 0, };
+int numone[41] = { 0, };
+
+void findnumberofoneorzero(int n)
+{
+	int i;
+	if (n == 0)
+	{
+		printf("%d %d\n", numzero[0], numone[0]);
+		return;
+	}
+	if (n == 1)
+	{
+		printf("%d %d\n", numzero[1], numone[1]);
+		return;
+	}
+	for (i = 2; i <= n; i++)
+	{
+		if(numzero[i] <= 0) numzero[i] = numzero[i - 2] + numzero[i - 1];
+		if(numone[i] <= 0) numone[i] = numone[i - 2] + numone[i - 1];
+	}
+	printf("%d %d\n", numzero[n], numone[n]);
+}
+int main()
+{
+	int T;
+	int i;
+	int n;
+
+	scanf("%d", &T);
+
+	numzero[0] = 1; numone[0] = 0;
+	numzero[1] = 0; numone[1] = 1;
+
+	for (i = 0; i < T; i++)
+	{
+		scanf("%d", &n);
+		findnumberofoneorzero(n);
+	}
+
+	return 0;
+}
