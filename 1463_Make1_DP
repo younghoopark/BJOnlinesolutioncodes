@@ -1,0 +1,54 @@
+#include<stdio.h>
+
+int mem[1000000] = { 0, };
+
+int functionA(int n)
+{
+	int lastpos = 1;
+	int i,j;
+	int sol[3] = { 10000, 10000, 10000};
+
+	if (n < 1)
+	{
+		return -1;
+	}
+
+	mem[0] = 0;
+	mem[1] = 0;
+	for (i = lastpos + 1; i <= n; ++i)
+	{
+		sol[0] = mem[i] = 1 + mem[i - 1];  //D[N] = D[N-1] + 1
+		if (i % 3 == 0)  //3으로 나누어 떨어질때  D[N] = D[N/3] + 1
+		{
+			mem[i] = 1 + mem[i / 3];
+			sol[1] = mem[i];
+		}
+		if (i % 2 == 0)  //2로 나누어 떨어질때   D[N] = D[N/2] + 1
+		{
+			mem[i] = 1 + mem[i / 2];
+			sol[2] = mem[i];
+		}
+		mem[i] = sol[0];
+		for (j = 1; j < 3; j++)
+		{
+			if (sol[j] < mem[i]) mem[i] = sol[j];
+		}
+		sol[0] = 10000, sol[1] = 10000, sol[2] = 10000;
+
+	}
+	return 1;
+}
+
+int main()
+{
+	int n;
+	int check;
+	scanf("%d", &n);
+
+	check = functionA(n);
+	if (check != -1)
+	{
+		printf("%d\n", mem[n]);
+	}
+	return 0;
+}
