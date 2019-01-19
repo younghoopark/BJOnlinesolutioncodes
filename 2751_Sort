@@ -1,0 +1,92 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+void Merge_Sort(int value[], int buffer[], int start, int end);
+void Internal_Merge(int value[], int buffer[], int start, int middle, int end);
+void Print_Array(int value[], int size);
+
+
+int main()
+{
+	int value[1000000];
+	int size;
+	int *buffer;
+
+	scanf("%d", &size);
+
+	for (int i = 0; i < size; i++)
+	{
+		scanf("%d", &value[i]);
+	}
+
+
+	buffer = (int*)malloc(sizeof(int)*size);
+
+	Merge_Sort(value, buffer, 0, size - 1);
+
+	Print_Array(value, size);
+
+	return 0;
+}
+
+void Merge_Sort(int value[], int buffer[], int start, int end)
+{
+	int middle = (start + end) / 2;
+	if (start < end)
+	{
+		Merge_Sort(value, buffer, start, middle);     //왼쪽부분 분할
+		Merge_Sort(value, buffer, middle + 1, end);   //오른쪽부분 분할
+		Internal_Merge(value, buffer, start, middle, end);   //왼쪽과 오른쪽부분 병합
+	}
+}
+
+void Internal_Merge(int value[], int buffer[], int start, int middle, int end)
+{
+	int i = start;
+	int j = middle + 1;
+	int k = start;
+	int t = 0;
+
+	while ((i <= middle) && (j <= end))
+	{
+		if (value[i] < value[j])
+		{
+			buffer[k] = value[i];
+			i++;
+		}
+		else
+		{
+			buffer[k] = value[j];
+			j++;
+		}
+		k++;
+	}  //병합
+
+	if (i > middle)  //분할된 두 부분중 뒤에부분의 원소들이 남았다는 뜻이므로 남은원소들을 buffer에 넣어준다
+	{
+		for (t = j; t <= end; t++, k++)
+		{
+			buffer[k] = value[t];
+		}
+	}
+	else   //앞부분의 원소들이 남았을때, 앞부분의 원소들을 buffer에 옮겨준다
+	{
+		for (t = i; t <= middle; t++, k++)
+		{
+			buffer[k] = value[t];
+		}
+	}
+
+	for (t = start; t <= end; t++)
+	{
+		value[t] = buffer[t];
+	}
+}
+
+void Print_Array(int value[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		printf("%d\n", value[i]);
+	}
+}
