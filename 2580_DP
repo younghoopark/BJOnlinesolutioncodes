@@ -1,0 +1,99 @@
+#include <cstdio>
+
+int board[9][9];
+int flag[81][3];
+int tot = 0;
+
+bool TF = false;
+
+void readdata();
+bool check(int a, int b, int val);
+int solve(int depth);
+
+
+int main(void) 
+{
+
+	readdata();
+
+	int depth = 0;
+	solve(depth);
+
+}
+
+void readdata()
+{
+	int i = 0, j = 0;
+	while (i < 9) {
+		while (j < 9) {
+			scanf("%d", &board[i][j]);
+			if (board[i][j] == 0) {
+				flag[tot][0] = i;
+				flag[tot][1] = j;
+				flag[tot][2] = 0;
+				tot++;
+			}
+			j++;
+		}
+		i++;
+		j = 0;
+	}
+}
+
+bool check(int a, int b, int v)
+{
+	int x, y = 0;
+	int i = 0, j = 0;
+
+	while (i < 9) {
+		if (board[a][i] == v) 
+			return false;
+		if (board[i][b] == v) 
+			return false;
+		i++;
+	}
+
+	i = j = 0;
+	while (i < 3) {
+		while (j < 3) {
+			x = (a / 3) * 3 + i;
+			y = (b / 3) * 3 + j;
+			if (board[x][y] == v) 
+				return false;
+			j++;
+		}
+		i++;
+		j = 0;
+	}
+
+	return true;
+}
+
+int solve(int depth)
+{
+	int i = 0, j = 0;
+
+	if (depth == tot) {
+		while(i < 9) {
+			printf("\n");
+			while (j < 9) {
+				printf("%d ", board[i][j]);
+				j++;
+			}
+			i++;
+			j = 0;
+		}
+		TF = true;
+		return 0;
+	}
+
+	i = 1;
+	while (i < 10) {
+		if (check(flag[depth][0], flag[depth][1], i) && !TF) {
+			board[flag[depth][0]][flag[depth][1]] = i;
+			solve(depth + 1);
+			board[flag[depth][0]][flag[depth][1]] = 0;
+		}
+		i++;
+	}
+}
