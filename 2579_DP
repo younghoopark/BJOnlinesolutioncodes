@@ -1,0 +1,49 @@
+#include<stdio.h>
+
+int sp[300] = { 0, };
+int m[300] = { 0, };    //바로앞 계단을 밟았을때의 최대점수
+
+int findmaxpoints(int numberofstairs)
+{
+	int i;
+	int tmp;
+
+	m[0] = sp[0];		//첫번째 계단까지의 최대 points는 첫번째 계단의 points
+	
+	m[1] = m[0] + sp[1];
+	
+	m[2] = m[0] + sp[2];
+	tmp = sp[1] + sp[2];
+	if (m[2] < tmp)
+	{
+		m[2] = tmp;
+	}
+
+	for (i = 3; i < numberofstairs; i++)
+	{
+		m[i] = m[i - 3] + sp[i - 1] + sp[i];
+		tmp = m[i - 2] + sp[i];
+		if (m[i] < tmp)
+		{
+			m[i] = tmp;
+		}
+	}
+	printf("%d\n", m[numberofstairs-1]);
+	return 0;
+}
+int main()
+{
+	int numberofstairs;
+	int i;
+
+	scanf("%d", &numberofstairs);
+
+	for (i = 0; i < numberofstairs; i++)
+	{
+		scanf("%d", &sp[i]);
+	}
+	findmaxpoints(numberofstairs);
+
+
+	return 0;
+}
