@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <string.h>
+
+int map[50][50] = { 0, };
+int visited[50][50] = { 0, };
+int udlr[4][2] = { {0,-1},{0,1},{-1,0},{1,0} };	//for checking up,down,left,right
+
+
+int T;			//number of testcases
+int M, N;		//width and height of the map
+int K;			//the number of baechoo
+int cnt = 0;	//the number of whitebaechoobug that we need
+
+int check_is_in_the_map(int Y, int X)
+{
+	if (X < 0 || X >= M || Y < 0 || Y >= N) return 0;
+	return 1;
+}
+
+void dfs(int Y, int X)
+{
+	visited[Y][X] = 1;
+	int updateX, updateY;
+	int i;
+	for (i = 0; i < 4; i++)
+	{
+		updateX = X + udlr[i][0];
+		updateY = Y + udlr[i][1];
+		if ((check_is_in_the_map(updateY, updateX) == 1) && (map[updateY][updateX] == 1) && (visited[updateY][updateX] != 1))
+		{
+			dfs(updateY, updateX);
+		}
+	}
+
+
+}
+
+void solution()
+{
+	int i, j;
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < M; j++)
+		{
+			if (visited[i][j] == 1) continue;
+			else if (map[i][j] == 1)
+			{
+				dfs(i, j);
+				cnt++;
+			}
+		}
+	}
+}
+
+int main()
+{
+	int X, Y;		//the positions of baechoos
+
+	scanf("%d", &T);
+
+	int i,j;
+
+	for (i = 0; i < T; i++)
+	{
+		scanf("%d %d %d", &M, &N, &K);
+		for (j = 0; j < K; j++)
+		{
+			scanf("%d %d", &X, &Y);
+			map[Y][X] = 1;
+		}
+		solution();
+		printf("%d\n", cnt);
+
+		//initialize for the next testcase
+		cnt = 0;
+		memset(map, 0, sizeof(map));
+		memset(visited, 0, sizeof(visited));
+	}
+
+	return 0;
+}
