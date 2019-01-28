@@ -1,0 +1,70 @@
+#include <iostream>
+#include <algorithm>
+#include <deque>
+
+using namespace std;
+
+int N, M;
+int arr[101][101];
+int visited[101][101];
+int dir[4][2] = { {1,0}, {0,1}, {-1,0}, {0,-1} };	//down right up left
+int cnt = 0;
+deque<pair<pair<int, int>,int>> dq;
+bool is_in_the_map(int row, int col)
+{
+	if (row < 1 || row > N || col < 1 || col > M)
+	{
+		return false;
+	}
+	return true;
+}
+
+void bfs(int row, int col)
+{
+	int update_row, update_col, cnt;
+
+	visited[row][col] = 1;
+	dq.push_back(make_pair(make_pair(1,1),1));
+	
+	while (!dq.empty())
+	{
+		row = dq.front().first.first;
+		col = dq.front().first.second;
+		cnt = dq.front().second;
+		dq.pop_front();
+		if (row == N && col == M)
+		{
+			cout << cnt << endl;
+			return;
+		}
+	
+		for (int i = 0; i < 4; i++)
+		{
+			update_row = row + dir[i][0];
+			update_col = col + dir[i][1];
+			if (is_in_the_map(update_row, update_col))
+			{
+				if (visited[update_row][update_col] == 0 && arr[update_row][update_col] == 1)
+				{
+					dq.push_back(make_pair(make_pair(update_row,update_col),cnt+1));
+					visited[update_row][update_col] = 1;
+				}
+			}
+		}
+	}
+}
+
+int main()
+{
+	cin >> N >> M;
+	for (int i = 1; i <= N; i++)
+	{
+		for (int j = 1; j <= M; j++)
+		{
+			scanf("%1d", &arr[i][j]);
+		}
+	}
+	bfs(1,1);
+
+	return 0;
+}
