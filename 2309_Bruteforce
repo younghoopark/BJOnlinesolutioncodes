@@ -1,0 +1,48 @@
+#include <iostream>
+#include <algorithm>
+#include <array>
+using namespace std;
+
+int main()
+{
+	int i, j;
+	int K[9] = { 0, };
+	int sum = 0;
+	for (i = 0; i < 9; i++)
+	{
+		cin >> K[i];
+		sum += K[i];
+	}
+
+	int val = 0;
+	int v1 = 0, v2 = 0;
+	for (i = 0; i < 9; i++)
+	{
+		for (j = 0; j < 9; j++)
+		{
+			if (i != j)
+			{
+				val = sum - K[i] - K[j];
+				if (val == 100)
+				{
+					v1 = i;
+					v2 = j;
+					break;
+				}
+			}
+		}
+		if (v1 != 0 && v2 != 0)
+		{
+			break;
+		}
+	}
+	K[v1] = 100;
+	K[v2] = 100;
+	sort(K, K + 9);
+
+	for (int k = 0; k < 7; k++)
+	{
+		cout << K[k] << endl;
+	}
+	return 0;
+}
