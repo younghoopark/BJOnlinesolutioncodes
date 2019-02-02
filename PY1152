@@ -1,0 +1,19 @@
+def solution(str):
+    cnt = 0
+    idx = 0
+    
+    for i in range(0,len(str)):
+        if str[i] == ' ':
+            cnt += 1
+    
+    if str[0] == ' ':
+        cnt -= 1
+    if str[len(str)-1] == ' ':
+        cnt -= 1
+            
+    return cnt+1
+
+
+a = input()
+sol = solution(a)
+print(sol)
