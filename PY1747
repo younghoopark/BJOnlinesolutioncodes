@@ -1,0 +1,26 @@
+def palindrome(num) :       #num이 palindrome수 일 경우, return true, 아니라면 return false
+    numstr = str(num)
+    for i in range(0, len(numstr)) :
+        if numstr[i] != numstr[len(numstr)-1-i]:
+            return False
+
+    return True
+
+def solution(N) :
+    if N == 1:
+        return 2
+    elif N == 2:
+        return 2
+
+    for i in range(N, 1004001):
+        if palindrome(i) == True:
+            for j in range(2, i):
+                if i % j == 0 :
+                    break 
+            if j == i-1:
+                return i
+
+
+N = input()    # 1 <= N <= 1,000,000
+num = int(N)
+print(solution(num))
