@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	int i,j;
+	int N;
+	char map[101][101] = { 0, };
+	int rowflag = 0, colflag = 0;
+	int cntrow = 0, cntcol = 0;
+
+
+	cin >> N;
+	for (i = 1; i <= N; i++)
+	{
+		for (j = 1; j <= N; j++)
+		{
+			cin >> map[i][j];
+		}
+	}
+
+	for (i = 1; i <= N; i++)
+	{
+		rowflag = colflag = 0;
+		for (j = 1; j < N; j++)
+		{
+			if (rowflag == 1 && map[i][j] == 'X')
+			{
+				rowflag = 0;
+			}
+			if (rowflag == 0 && map[i][j] == '.' && map[i][j + 1] == '.')
+			{
+				cntrow++;
+				rowflag = 1;
+			}
+			
+			if (colflag == 1 && map[j][i] == 'X')
+			{
+				colflag = 0;
+			}
+			if (colflag == 0 && map[j][i] == '.' && map[j + 1][i] == '.')
+			{
+				cntcol++;
+				colflag = 1;
+			}
+		}
+	}
+
+	cout << cntrow << ' ' << cntcol << endl;
+
+
+	return 0;
+}
