@@ -1,0 +1,84 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int visited[100][100] = { 0, };
+int udlr[4][2] = { {-1,0},{1,0},{0,-1},{0,1} };
+int row, col, K;
+int map[100][100];
+vector<int> v;		//각 영역의 넓이를 저장할 변수
+int cnt = 0;
+bool checkinmap(int newrow, int newcol)
+{
+	return (newrow >= 0 && newrow < row && newcol >= 0 && newcol < col);
+}
+
+void dfs(int r, int c)
+{
+	cnt++;
+	visited[r][c] = 1;
+	int i, j, k;
+	
+	for (k = 0; k < 4; k++)
+	{
+		int newrow = r + udlr[k][0];
+		int newcol = c + udlr[k][1];
+		if (map[newrow][newcol] == 0 && visited[newrow][newcol] == 0 && checkinmap(newrow, newcol) == true)
+		{
+			dfs(newrow, newcol);
+		}
+	}
+	
+}
+int main()
+{
+	int i, j, k;
+	int square[100][4];
+	memset(map, 0, sizeof(map));
+	cin >> row >> col >> K;
+	memset(square, 0, sizeof(square));
+	for (i = 0; i < K; i++)
+	{
+		cin >> square[i][0] >> square[i][1] >> square[i][2] >> square[i][3];
+	}
+
+	for (i = 0; i < K; i++)
+	{
+		for (j = square[i][0]; j < square[i][2]; j++)				//[i][0] [i][2]가 x좌표
+		{
+			for (k = square[i][1]; k < square[i][3]; k++)			//[i][1] [i][3]이 y좌표
+			{
+				map[k][j] = 1;
+			}
+		}
+	}		//map입력받기 끝
+	
+	int areacnt = 0;
+	for (i = 0; i < row; i++)
+	{
+		for (j = 0; j < col; j++)
+		{
+			if (map[i][j] == 0 && visited[i][j] == 0)
+			{
+				dfs(i, j);
+				areacnt++;
+				v.push_back(cnt);
+				cnt = 0;
+			}
+		}
+	}
+	sort(v.begin(), v.end());
+	
+	//정답 출력
+	cout << areacnt << endl;
+	for (i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << ' ';
+	}
+	cout << '\n';
+
+	return 0;
+}
