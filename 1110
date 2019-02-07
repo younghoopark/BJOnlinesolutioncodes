@@ -1,0 +1,39 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	int cycle = 0;
+	int N;
+	cin >> N;
+	int saveN = N;
+	int tmp1, tmp2;
+	while (1)
+	{
+		if (N == 0)
+		{
+			cycle++;
+			break;
+		}
+		else if (N > 0 && N < 10)
+		{
+			N = N * 10 + N;
+			cycle++;
+			if (N == saveN) break;
+		}
+		else		// 10 <= N <= 99
+		{
+			tmp1 = N / 10 + N % 10;
+			if (tmp1 >= 10) tmp1 = tmp1 % 10;
+			tmp2 = N % 10;
+			N = tmp2 * 10 + tmp1;
+			cycle++;
+			if (N == saveN) break;
+		}
+	}
+
+	cout << cycle << endl;
+
+	return 0;
+}
