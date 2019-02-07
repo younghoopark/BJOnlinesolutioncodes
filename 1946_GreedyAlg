@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	vector<pair<int, int> > v;
+	vector<pair<int, int> > ans;
+	int i, j, k;
+	int T, N;
+	int a, b;
+	int cnt;
+	int flag;
+	cin >> T;
+	for (i = 0; i < T; i++)
+	{
+		cnt = 0;
+		cin >> N;
+		for (j = 0; j < N; j++)
+		{
+			cin >> a >> b;
+			v.push_back(make_pair(a, b));
+		}
+		sort(v.begin(), v.end());			//1. 오름차순으로 정렬
+		ans.push_back(make_pair(v[0].first, v[0].second));	//서류심사 1등인 애는 무조건 집합의 해 이기 때문에, 해집합(ans벡터)에 추가
+		for (j = 1; j < N; j++)
+		{
+			flag = 0;
+			for (k = 0; k < ans.size(); k++)
+			{
+				if (v[j].second > ans[k].second)
+				{
+					flag = 1;
+					break;
+				}
+			}
+			if (flag == 0)
+			{
+				ans.push_back(make_pair(v[j].first, v[j].second));
+			}
+		}
+		cout << ans.size() << endl;
+		v.clear();
+		ans.clear();
+	}
+
+	return 0;
+}
