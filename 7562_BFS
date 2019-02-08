@@ -1,0 +1,111 @@
+#include <iostream>
+#include <deque>
+#include <cstring>
+
+using namespace std;
+
+deque <pair<pair<int, int>, int> > dq;		//첫번째 pair은 <x,y>(좌표정보), 두번째 pair는 <좌표정보, 깊이정보>	
+int T, length;
+int drow, dcol;
+int visited[301][301];
+void bfs(int row, int col)
+{
+	while (!dq.empty())
+	{
+		int r = dq.front().first.first;
+		int c = dq.front().first.second;
+		int d = dq.front().second;
+		if (r == drow && c == dcol)
+		{
+			cout << d << endl;
+			return;
+		}
+		dq.pop_front();
+		
+		if (r - 2 >= 0 && r - 2 <= length - 1 && c - 1 >= 0 && c - 1 <= length - 1)
+		{
+			if (visited[r - 2][c - 1] != 1)
+			{
+				dq.push_back(make_pair(make_pair(r - 2, c - 1), d+1));
+				visited[r - 2][c - 1] = 1;
+			}
+		}
+		if (r - 1 >= 0 && r - 1 <= length - 1 && c - 2 >= 0 && c - 2 <= length - 1)
+		{
+			if (visited[r - 1][c - 2] != 1)
+			{
+				dq.push_back(make_pair(make_pair(r - 1, c - 2), d+1));
+				visited[r - 1][c - 2] = 1;
+			}
+		}
+		if (r - 2 >= 0 && r - 2 <= length - 1 && c + 1 >= 0 && c + 1 <= length - 1)
+		{
+			if (visited[r - 2][c + 1] != 1)
+			{
+				dq.push_back(make_pair(make_pair(r - 2, c + 1), d+1));
+				visited[r - 2][c + 1] = 1;
+			}
+		}
+		if (r - 1 >= 0 && r - 1 <= length - 1 && c + 2 >= 0 && c + 2 <= length - 1)
+		{
+			if (visited[r - 1][c + 2] != 1)
+			{
+				dq.push_back(make_pair(make_pair(r - 1, c + 2), d+1));
+				visited[r - 1][c + 2] = 1;
+			}
+		}
+		if (r + 2 >= 0 && r + 2 <= length - 1 && c - 1 >= 0 && c - 1 <= length - 1)
+		{
+			if (visited[r + 2][c - 1] != 1)
+			{
+				dq.push_back(make_pair(make_pair(r + 2, c - 1), d+1));
+				visited[r + 2][c - 1] = 1;
+			}
+		}
+		if (r + 1 >= 0 && r + 1 <= length - 1 && c - 2 >= 0 && c - 2 <= length - 1)
+		{
+			if (visited[r + 1][c - 2] != 1)
+			{
+				dq.push_back(make_pair(make_pair(r + 1, c - 2), d+1));
+				visited[r + 1][c - 2] = 1;
+			}
+		}
+		if (r + 2 >= 0 && r + 2 <= length - 1 && c + 1 >= 0 && c + 1 <= length - 1)
+		{
+			if (visited[r + 2][c + 1] != 1)
+			{
+				dq.push_back(make_pair(make_pair(r + 2, c + 1), d+1));
+				visited[r + 2][c + 1] = 1;
+			}
+		}
+		if (r + 1 >= 0 && r + 1 <= length - 1 && c + 2 >= 0 && c + 2 <= length - 1)
+		{
+			if (visited[r + 1][c + 2] != 1)
+			{
+				dq.push_back(make_pair(make_pair(r + 1, c + 2), d+1));
+				visited[r + 1][c + 2] = 1;
+			}
+		}
+	}
+}
+
+int main()
+{
+	cin >> T;
+	int i;
+	int srow, scol;
+	for (i = 0; i < T; i++)
+	{
+		cin >> length;				//맵의 한변의 길이 입력
+		cin >> srow >> scol;		//시작위치 좌표정보 입력
+		cin >> drow >> dcol;		//도착위치 좌표정보 입력
+		dq.push_back(make_pair(make_pair(srow, scol), 0));
+		visited[srow][scol] = 1;
+		bfs(srow, scol);
+
+		memset(visited, 0, sizeof(visited));
+		dq.clear();
+	}
+
+	return 0;
+}
