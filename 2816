@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;		//채널 수 입력
+	vector<string> v;
+	vector<int> ans;
+	string str;
+	int kbs1_pos = 0;
+	int kbs2_pos = 0;
+	int pos = 0;
+	int i;
+	for (i = 0; i < N; i++)
+	{
+		cin >> str;
+		v.push_back(str);
+	}
+
+	//1. (1번 연산을 이용하여)KBS1과 KBS2의 위치를 찾고
+	for (i = 0; i < v.size(); i++)
+	{
+		if (v[i] == "KBS1") kbs1_pos = i;
+		else if (v[i] == "KBS2") kbs2_pos = i;
+	}
+	
+	int order = 0;
+	//KBS1이 KBS2 보다 위에있을 때
+	if (kbs1_pos > kbs2_pos) order = 1;
+	for (i = 0; i < kbs1_pos; i++)
+	{
+		ans.push_back(1);
+	}
+	for (i = 0; i < kbs1_pos; i++)
+	{
+		ans.push_back(4);
+	}
+	for (i = 0; i < kbs2_pos + order; i++)
+	{
+		ans.push_back(1);
+	}
+	for (i = 0; i < kbs2_pos + order - 1; i++)
+	{
+		ans.push_back(4);
+	}
+	for (i = 0; i < ans.size(); i++)
+	{
+		cout << ans[i];
+	}
+	cout << '\n';
+
+	return 0;
+}
