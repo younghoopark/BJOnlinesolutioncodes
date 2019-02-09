@@ -1,0 +1,58 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+vector<pair<pair<int,int>,pair<int, int>> > v;
+
+int n, k;
+int c, g, s, d;
+int kc, kg, ks, kd;
+
+bool desc(pair<pair<int,int>, pair<int, int> > a, pair<pair<int,int>, pair<int, int> > b)
+{
+	if (a.first.second == b.first.second)
+	{
+		if (a.second.first == b.second.first)		//금메달 수와 은메달 수 모두 같을 때
+		{
+			return a.second.second > b.second.second;		//동메달 수가 다를 때, 동메달 수에 따라 내림차순으로 정렬
+		}
+		else		//금메달 수 같고, 은메달 수 다를 경우, 은메달 획득 순에 따라 내림차순으로 정렬
+		{
+			return a.second.first > b.second.first;
+		}
+	}
+	else		//금메달 수가 다를경우, 금메달 수에 따라 내림차순으로 정렬
+	{
+		return a.first.second > b.first.second;
+	}
+	//return a.first > b.first;
+}
+
+int main()
+{
+	cin >> n >> k;
+	int i;
+	for (i = 0; i < n; i++)
+	{
+		cin >> c >> g >> s >> d;
+		v.push_back(make_pair(make_pair(c, g), make_pair(s, d)));
+		if (v[i].first.first == k)
+		{
+			kc = c; kg = g; ks = s; kd = d;
+		}
+	}
+	sort(v.begin(), v.end(), desc);
+	for (i = 0; i < n; i++)
+	{
+		//cout << v[i].first.first << ' ' << v[i].first.second << ' ' << v[i].second.first << ' ' << v[i].second.second << endl;
+		if (v[i].first.second == kg && v[i].second.first == ks && v[i].second.second == kd)
+		{
+			break;
+		}
+	}
+	cout << i + 1 << endl;
+
+	return 0;
+}
