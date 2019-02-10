@@ -1,0 +1,120 @@
+#include <iostream>
+
+using namespace std;
+
+int map[51][51];
+int visited[51][51];		//청소의 여부를 check, 1일경우 그 구역은 청소된 구역
+int main()
+{
+	int n, m;		//n = row,  m = col
+	cin >> n >> m;
+	int r, c, d;
+	cin >> r >> c >> d;
+	int i, j;
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < m; j++)
+		{
+			cin >> map[i][j];
+		}
+	}
+	
+	int cnt = 0;
+	int can = 0;
+	for (i = r,j = c; ;i = r, j = c)
+	{
+		if (cnt == 4)		//4방향 모두 청소할 공간이 없는 경우
+		{
+			if (d == 0)
+			{
+				if (map[i + 1][j] == 1)	//뒤쪽방향이 벽인경우
+				{
+					break;
+				}
+				r = i + 1; c = j; cnt = 0; continue;
+			}
+			else if (d == 1)
+			{
+				if (map[i][j - 1] == 1)
+				{
+					break;
+				}
+				r = i; c = j - 1; cnt = 0; continue;
+			}
+			else if (d == 2)
+			{
+				if (map[i - 1][j] == 1)
+				{
+					break;
+				}
+				r = i - 1; c = j; cnt = 0; continue;
+			}
+			else if (d == 3)
+			{
+				if (map[i][j + 1] == 1)
+				{
+					break;
+				}
+				r = i; c = j + 1; cnt = 0; continue;
+			}
+		}
+
+		if (map[i][j] == 0 && visited[i][j] != 1)
+		{
+			cnt = 0;
+			visited[i][j] = 1;
+			can++;
+		}
+		if (d == 0)				//로봇이 북쪽 바라보고 있을 경우
+		{
+			if (map[i][j - 1] == 0 && visited[i][j - 1] != 1)	//왼쪽에 청소할 공간이 있을 경우
+			{
+				d = 3; r = i; c = j - 1; continue;
+			}
+			else												//왼쪽에 청소할 공간이 없는 경우
+			{
+				cnt++;
+				d = 3; continue;
+			}
+		}
+		else if (d == 1)		//로봇이 동쪽 바라보고 있을 경우
+		{
+			if (map[i-1][j] == 0 && visited[i-1][j] != 1)	//왼쪽에 청소할 공간이 있을 경우
+			{
+				d = 0; r = i - 1; c = j; continue;
+			}
+			else											//왼쪽에 청소할 공간이 없는 경우
+			{
+				cnt++;
+				d = 0; continue;
+			}
+		}
+		else if (d == 2)		//로봇이 남쪽 바라보고 있을 경우
+		{
+			if (map[i][j + 1] == 0 && visited[i][j + 1] != 1)	//왼쪽에 청소할 공간이 있을 경우
+			{
+				d = 1; r = i; c = j + 1; continue;
+			}
+			else
+			{
+				cnt++;
+				d = 1; continue;
+			}
+		}
+		else if (d == 3)		//로봇이 서쪽 바라보고 있을 경우
+		{
+			if (map[i+1][j] == 0 && visited[i+1][j] != 1)	//왼쪽에 청소할 공간이 있을 경우
+			{
+				d = 2; r = i + 1; c = j; continue;
+			}
+			else
+			{
+				cnt++;
+				d = 2; continue;
+			}
+		}
+	}
+	cout << can << endl;
+
+	return 0;
+}
