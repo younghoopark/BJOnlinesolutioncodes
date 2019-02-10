@@ -1,0 +1,49 @@
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+int main()
+{
+	deque<pair<int,int> > dq;
+	int t;
+	int n, m;
+	cin >> t;
+	int i, j, k;
+	int pri;
+	int cnt;
+	int flag;
+	for (i = 0; i < t; i++)
+	{
+		cnt = 0;
+		cin >> n >> m;
+		for (j = 0; j < n; j++)
+		{
+			cin >> pri;
+			dq.push_back(make_pair(j, pri));
+		}
+		for (j = 0; ;)
+		{
+			flag = 0;
+			for (k = 1; k < dq.size(); k++)
+			{
+				if (dq[j].second < dq[k].second)
+				{
+					dq.push_back(make_pair(dq[j].first, dq[j].second));
+					dq.pop_front();
+					flag = 1;
+					break;
+				}
+			}
+			if (flag == 0)		//출력 하는 경우
+			{
+				cnt++;
+				if (dq[j].first == m) break;
+				dq.pop_front();
+			}
+		}
+		cout << cnt << endl;
+		dq.clear();
+	}
+	return 0;
+}
