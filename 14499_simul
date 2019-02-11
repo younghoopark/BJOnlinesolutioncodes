@@ -1,0 +1,112 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> dice;	//0번인덱스부터 5번인덱스까지 각각, 주사위의 위쪽[0], 왼쪽[1], 오른쪽[2], 앞쪽[3], 뒤쪽[4], 아래쪽[5]
+int map[20][20];
+int main()
+{
+	dice.resize(6);
+	int n, m, x, y, k;
+	cin >> n >> m >> x >> y >> k;
+	int i, j;
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < m; j++)
+		{
+			cin >> map[i][j];
+		}
+	}
+
+	int command;;
+	int mrow = x, mcol = y;		//map의 r,c 좌표
+	for (i = 0; i < k; i++)
+	{
+		vector<int> copydice(dice);
+		cin >> command;				//1부터 4까지 명령어 입력받기
+		if (command == 1 && mrow >= 0  && mrow <= n-1 && mcol + 1 >= 0 && mcol + 1 <= m-1)			//동쪽으로 이동 4->4, 3->3, 0->2, 1->0, 2->5, 5->1
+		{
+			dice[4] = copydice[4];
+			dice[3] = copydice[3];
+			dice[2] = copydice[0];
+			dice[0] = copydice[1];
+			dice[5] = copydice[2];
+			dice[1] = copydice[5];
+			mrow = mrow, mcol = mcol + 1;
+			if (map[mrow][mcol] == 0)
+			{
+				map[mrow][mcol] = dice[5];
+			}
+			else
+			{
+				dice[5] = map[mrow][mcol];
+				map[mrow][mcol] = 0;
+			}
+		}
+		else if (command == 2 && mrow >= 0 && mrow <= n - 1 && mcol - 1 >= 0 && mcol - 1 <= m - 1)		//서쪽으로 이동 4->4, 3->3, 0->1, 2->0, 1->5, 5->2
+		{
+			dice[4] = copydice[4];
+			dice[3] = copydice[3];
+			dice[1] = copydice[0];
+			dice[0] = copydice[2];
+			dice[5] = copydice[1];
+			dice[2] = copydice[5];
+			mrow = mrow, mcol = mcol - 1;
+			if (map[mrow][mcol] == 0)
+			{
+				map[mrow][mcol] = dice[5];
+			}
+			else
+			{
+				dice[5] = map[mrow][mcol];
+				map[mrow][mcol] = 0;
+			}
+		}
+		else if (command == 3 && mrow - 1 >= 0 && mrow - 1 <= n - 1 && mcol >= 0 && mcol <= m - 1)		//북쪽으로 이동 0->4, 3->0, 5->3, 4->5, 1->1, 2->2
+		{
+			dice[4] = copydice[0];
+			dice[0] = copydice[3];
+			dice[3] = copydice[5];
+			dice[5] = copydice[4];
+			dice[1] = copydice[1];
+			dice[2] = copydice[2];
+			mrow = mrow - 1, mcol = mcol;
+			if (map[mrow][mcol] == 0)
+			{
+				map[mrow][mcol] = dice[5];
+			}
+			else
+			{
+				dice[5] = map[mrow][mcol];
+				map[mrow][mcol] = 0;
+			}
+		}
+		else if (command == 4 && mrow + 1 >= 0 && mrow + 1 <= n - 1 && mcol >= 0 && mcol <= m - 1)		//남쪽으로 이동 0->3, 3->5, 5->4, 4->0, 1->1, 2->2
+		{
+			dice[3] = copydice[0];
+			dice[5] = copydice[3];
+			dice[4] = copydice[5];
+			dice[0] = copydice[4];
+			dice[1] = copydice[1];
+			dice[2] = copydice[2];
+			mrow = mrow + 1, mcol = mcol;
+			if (map[mrow][mcol] == 0)
+			{
+				map[mrow][mcol] = dice[5];
+			}
+			else
+			{
+				dice[5] = map[mrow][mcol];
+				map[mrow][mcol] = 0;
+			}
+		}
+		else
+		{
+			continue;
+		}
+		cout << dice[0] << endl;
+	}
+
+	return 0;
+}
