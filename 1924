@@ -1,0 +1,57 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	int x, y;
+	cin >> x >> y;
+	int i;
+	int cnt = 0;
+	for (i = 1; i < x; i++)
+	{
+		if (i == 2)
+		{
+			cnt += 28;
+		}
+		else if (i == 1 || i == 3 || i == 5 || i == 7 || i == 8 || i == 10 || i == 12)
+		{
+			cnt += 31;
+		}
+		else
+		{
+			cnt += 30;
+		}
+	}
+	cnt += (y);
+	if (cnt % 7 == 1)
+	{
+		cout << "MON" << endl;
+	}
+	else if (cnt % 7 == 2)
+	{
+		cout << "TUE" << endl;
+	}
+	else if (cnt % 7 == 3)
+	{
+		cout << "WED" << endl;
+	}
+	else if (cnt % 7 == 4)
+	{
+		cout << "THU" << endl;
+	}
+	else if (cnt % 7 == 5)
+	{
+		cout << "FRI" << endl;
+	}
+	else if (cnt % 7 == 6)
+	{
+		cout << "SAT" << endl;
+	}
+	else if (cnt % 7 == 0)
+	{
+		cout << "SUN" << endl;
+	}
+
+	return 0;
+}
