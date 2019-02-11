@@ -1,0 +1,84 @@
+#include <iostream>
+#include <deque>
+#include <cstring>
+using namespace std;
+
+char map[50][50];
+int visited[50][50];
+int udlr[4][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+deque<pair<pair<int, int>, int> > dq;		//앞에서 부터 순서대로 <row좌표, col좌표>, 깊이정보
+int row, col;
+int maxdepth = 0;
+int depth;
+
+bool isinmap(int r, int c)
+{
+	if (r >= 0 && r < row && c >= 0 && c < col)
+	{
+		return true;
+	}
+	else return false;
+}
+void bfs(int r, int c)
+{
+	visited[r][c] = 1;
+	int newr, newc;
+	int popr, popc, popdep;
+	int i;
+	while (!dq.empty())
+	{
+		popr = dq.front().first.first;
+		popc = dq.front().first.second;
+		popdep = dq.front().second;
+		dq.pop_front();
+		if (popdep > maxdepth)
+		{
+			maxdepth = popdep;
+		}
+		for (i = 0; i < 4; i++)
+		{
+			newr = popr + udlr[i][0];
+			newc = popc + udlr[i][1];
+			if (isinmap(newr, newc) == true && map[newr][newc] == 'L' && visited[newr][newc] != 1)
+			{
+				dq.push_back(make_pair(make_pair(newr, newc), popdep + 1));
+				visited[newr][newc] = 1;
+			}
+		}
+
+	}
+
+}
+int main()
+{
+	cin >> row >> col;
+	int i, j;
+	getchar();
+	for (i = 0; i < row; i++)
+	{
+		for (j = 0; j < col; j++)
+		{
+			scanf("%1c", &map[i][j]);
+		}
+		getchar();
+	}
+
+	for (i = 0; i < row; i++)
+	{
+		for (j = 0; j < col; j++)
+		{
+			if (map[i][j] == 'L')
+			{
+				dq.clear();
+				memset(visited, 0, sizeof(visited));
+				depth = 0;
+				dq.push_back(make_pair(make_pair(i, j), depth));
+				bfs(i, j);
+			}
+		}
+	}
+
+	cout << maxdepth << endl;
+
+	return 0;
+}
