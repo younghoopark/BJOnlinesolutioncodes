@@ -1,0 +1,44 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	int n;
+	int num1, num2;
+	cin >> n >> num1 >> num2;
+	int round = 1;
+	while (n > 1)
+	{
+		//cout << num1 << ' ' << num2 << endl;
+		if ((num1 - num2 == 1 || num2 - num1 == 1))
+		{
+			if (((num1 - 1) / 2 == (num2 - 1) / 2))
+			{
+				break;
+			}
+		}
+		if (num1 % 2 == 0)
+		{
+			num1 /= 2;
+		}
+		else if (num1 % 2 != 0)
+		{
+			num1 = (num1 + 1) / 2;
+		}
+
+		if (num2 % 2 == 0)
+		{
+			num2 /= 2;
+		}
+		else if (num2 % 2 != 0)
+		{
+			num2 = (num2 + 1) / 2;
+		}
+		n /= 2;
+		round++;
+	}
+	cout << round << endl;
+
+	return 0;
+}
