@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int N, M, a[8];
+vector<int> b;
+bool visited[8];
+
+bool promising()
+{
+	int i;
+	for (i = 0; i < M - 1; i++)
+	{
+		if (b[i] == b[i + 1]) return false;
+	}
+	return true;
+}
+
+void dfs(int v, int depth)
+{
+	int i;
+	if (depth == M)
+	{
+		if (promising())
+		{
+			for (i = 0; i < M; i++) cout << b[i] << ' ';
+			cout << '\n';
+		}
+	}
+	else
+	{
+		for (i = 0; i < N; i++)
+		{
+			if (!visited[i])
+			{
+				b.push_back(a[i]);
+				visited[i] = true;
+				dfs(i+1, depth + 1);
+			}
+		}
+	}
+	visited[v-1] = false;
+	b.pop_back();
+
+
+}
+
+int main()
+{
+	cin >> N >> M;
+	for (int i = 0; i < N; i++)
+	{
+		a[i] = i + 1;
+	}
+	dfs(0, 0);
+
+
+	return 0;
+}
