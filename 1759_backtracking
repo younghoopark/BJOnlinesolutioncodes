@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+char arr[15];
+vector<char> ans;
+bool visited[15];
+int L, C;
+int jaumcnt = 0, moumcnt = 0;
+void printset()
+{
+	if (jaumcnt < 2 || moumcnt < 1)
+	{
+		return;
+	}
+	int i;
+	for (i = 0; i < ans.size(); i++)
+	{
+		cout << ans[i];
+	}
+	cout << '\n';
+}
+bool promising(char alphabet)
+{
+	int i;
+	if (ans.empty())
+	{
+		return true;
+	}
+	else
+	{
+		for (i = 0; i < ans.size(); i++)
+		{
+			if (ans[i] > alphabet) return false;
+		}
+	}
+	return true;
+
+}
+void dfs(int v, int len)
+{
+	int i;
+	if (len == L)
+	{
+		printset();
+	}
+	else
+	{
+		for (i = 0; i < C; i++)
+		{
+			if (!visited[i] && promising(arr[i]))
+			{
+				visited[i] = true;
+				if (arr[i] == 'a' || arr[i] == 'e' || arr[i] == 'i' || arr[i] == 'o' || arr[i] == 'u') moumcnt++;
+				else jaumcnt++;
+				ans.push_back(arr[i]);
+				dfs(i + 1, len + 1);
+			}
+		}
+	}
+	if (!ans.empty())
+	{
+		if (ans.back() == 'a' || ans.back() == 'e' || ans.back() == 'i' || ans.back() == 'o' || ans.back() == 'u')	moumcnt--;//자음일 경우, jaumcnt--; 모음일 경우 moumcnt--;
+		else jaumcnt--;
+		ans.pop_back();
+	}
+	if (v - 1 >= 0)
+	{
+		visited[v - 1] = false;
+	}
+}
+
+int main()
+{
+	cin >> L >> C;
+	int i;
+	for (i = 0; i < C; i++)
+	{
+		cin >> arr[i];
+	}
+	sort(arr, arr + C);
+	dfs(0, 0);
+
+	return 0;
+}
