@@ -1,0 +1,63 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int N, K, depth = 0;
+bool visited[100001];
+queue<pair<int, int> > dq;			//<vertex, depth>
+
+void bfs()
+{
+	while (!dq.empty())
+	{
+		int popvertex = dq.front().first, popdepth = dq.front().second;
+		dq.pop();
+		if (popvertex * 2 == K || popvertex - 1 == K || popvertex + 1 == K)
+		{
+			cout << popdepth + 1 << endl; return;
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			if (i == 0)		//N*2
+			{
+				if (popvertex * 2 <= 100000 && !visited[popvertex * 2])
+				{
+					dq.push(make_pair(popvertex * 2, popdepth + 1)); visited[popvertex * 2] = true;
+				}
+			}
+			else if (i == 1)	//N-1
+			{
+				if (!visited[popvertex - 1] && popvertex - 1 >= 0)
+				{
+					dq.push(make_pair(popvertex - 1, popdepth + 1)); visited[popvertex - 1] = true;
+				}
+			}
+			else if (i == 2)	//N+1
+			{
+				if (popvertex + 1 <= 100000 && !visited[popvertex + 1])
+				{
+					dq.push(make_pair(popvertex + 1, popdepth + 1)); visited[popvertex + 1] = true;
+				}
+			}
+		}
+	}
+}
+int main()
+{
+	cin >> N >> K;
+	if (N >= K)
+	{
+		while (N != K)
+		{
+			N--; depth++;
+		}
+		cout << depth << endl;
+	}
+	else if(N < K)
+	{
+		dq.push(make_pair(N, 0));
+		visited[N] = true;
+		bfs();
+	}
+	return 0;
+}
