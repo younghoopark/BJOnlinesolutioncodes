@@ -1,0 +1,24 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	int N, ans = 0;
+	cin >> N;
+	ans = N / 5;
+	if (N % 5 != 0)	//나누어 떨어지지 않으면
+	{
+		for (; ans >= 0; ans--)
+		{
+			if ((N - (5 * ans)) % 3 == 0)
+			{
+				ans += (N - (5 * ans)) / 3;
+				break;
+			}
+		}
+	}
+
+	cout << ans << endl;
+	return 0;
+}
