@@ -1,0 +1,77 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int N, maxheight = 0;
+int map[100][100], mmap[100][100];
+bool visited[100][100];
+int ans = 0, cnt;
+int udlr[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };
+
+void dfs(int r, int c)
+{
+	visited[r][c] = true;
+	for (int i = 0; i < 4; i++)
+	{
+		int newr = r + udlr[i][0];
+		int newc = c + udlr[i][1];
+		if (newr >= 0 && newr < N && newc >= 0 && newc < N)
+		{
+			if (!visited[newr][newc] && !mmap[newr][newc])		//방문하지 않았고, 잠기지도 않은 점이면
+			{
+				dfs(newr, newc);
+			}
+		}
+	}
+}
+void makemap(int height)
+{
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			if (map[i][j] <= height)
+			{
+				mmap[i][j] = 1;		//잠긴 구역을 1로 표시
+			}
+		}
+	}
+}
+int main()
+{
+	cin >> N;
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			cin >> map[i][j];
+			if (map[i][j] > maxheight)
+			{
+				maxheight = map[i][j];
+			}
+		}
+	}
+	for (int i = 0; i < maxheight; i++)
+	{
+		cnt = 0;
+		memset(mmap, 0, sizeof(mmap));
+		memset(visited, 0, sizeof(visited));
+		makemap(i);
+		for (int j = 0; j < N; j++)
+		{
+			for (int k = 0; k < N; k++)
+			{
+				if (!visited[j][k] && !mmap[j][k])
+				{
+					dfs(j, k);
+					cnt++;
+				}
+			}
+		}
+		
+		if (cnt > ans) ans = cnt;
+	}
+	cout << ans << endl;
+
+	return 0;
+}
