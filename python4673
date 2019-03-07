@@ -1,0 +1,15 @@
+def checkvisited(num):
+    total = 0
+    total += num
+    for i in range(0, len(str(num))):
+        total += int(num/10**i)%10
+    return total
+
+L = []
+for i in range(0,10000):
+    L.append(checkvisited(i))
+for i in range(0,10000):
+    if i in L:
+        pass
+    else :
+        print(i)
