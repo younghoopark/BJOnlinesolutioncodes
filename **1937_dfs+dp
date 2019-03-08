@@ -1,0 +1,63 @@
+#include <iostream>
+
+using namespace std;
+#define MAX(X,Y) ((X) > (Y) ? (X) : (Y))
+
+int n, map[500][500], ans = 0;
+int udlr[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };
+int dp[500][500];
+void dfs(int r, int c)
+{
+	int i, j, dpvalue = 0;
+	for (i = 0; i < 4; i++)
+	{
+		int newr = r + udlr[i][0];
+		int newc = c + udlr[i][1];
+		if (newr >= 0 && newr < n && newc >= 0 & newc < n)
+		{
+			if (map[newr][newc] > map[r][c])
+			{
+				if (dp[newr][newc] == 0)
+				{
+					dfs(newr, newc);
+				}
+				if (dp[newr][newc] > dpvalue)
+				{
+					dpvalue = dp[newr][newc];
+				}
+			}
+		}
+	}
+	dp[r][c] = dpvalue + 1;
+	if (dp[r][c] > ans)
+	{
+		ans = dp[r][c];
+	}
+
+}
+
+int main()
+{
+	cin >> n;
+	int i, j;
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < n; j++)
+		{
+			cin >> map[i][j];
+		}
+	}
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < n; j++)
+		{
+			if (dp[i][j] == 0)
+			{
+				dfs(i, j);
+			}
+		}
+	}
+	cout << ans << endl;
+
+	return 0;
+}
