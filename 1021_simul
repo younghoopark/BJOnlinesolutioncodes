@@ -1,0 +1,56 @@
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+int n, m, idx[50], ans = 0;
+deque<int> dq;
+int main()
+{
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		cin >> idx[i];
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		dq.push_back(i);
+	}
+	for (int i = 0; i < m; i++)
+	{
+		int pos = 1;
+		for (int j = 0; j < dq.size(); j++)
+		{
+			if (idx[i] == dq[j]) break;
+			pos++;
+		}
+		if (pos <= dq.size() / 2 + 1)			//이런 구간 정할 떄 꿀 팁 있나?
+		{
+			while (pos != 1)
+			{
+				dq.push_back(dq.front());
+				dq.pop_front();
+				pos--;
+				ans++;		//2번연산
+			}
+		}
+		else
+		{
+			while (pos != 1)
+			{
+				dq.push_front(dq.back());
+				dq.pop_back();
+				pos++;
+				if (pos == dq.size() + 1)
+				{
+					pos = 1;
+				}
+				ans++;
+			}
+		}
+		dq.pop_front();
+	}
+	cout << ans << endl;
+
+	return 0;
+}
