@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <climits>
+using namespace std;
+
+struct land {
+	int r, c;
+	int level;
+};
+int n, map[100][100], ans = INT_MAX;
+int udlr[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };
+bool visited[100][100];
+vector<land> v;
+void findans(int landcnt) {
+	int val = 0;
+	if (landcnt == 1) {
+		ans = 0;
+		return;
+	}
+	for (int i = 0; i < v.size(); i++) {
+		for (int j = i + 1; j < v.size(); j++) {
+			if (v[i].level != v[j].level) {
+				val = abs(v[i].r - v[j].r) + abs(v[i].c - v[j].c) - 1;
+				if (val < ans) {
+					ans = val;
+				}
+			}
+		}
+	}
+
+}
+void dfs(int r, int c, int level) {
+	visited[r][c] = true;
+	map[r][c] = level;
+	land lnd;
+	lnd.r = r; lnd.c = c; lnd.level = level;
+	v.push_back(lnd);
+	for (int i = 0; i < 4; i++) {
+		int newr = r + udlr[i][0];
+		int newc = c + udlr[i][1];
+		if (newr < 0 || newr >= n || newc < 0 || newc >= n) {
+			continue;
+		}
+		if (!visited[newr][newc] && map[newr][newc] >= 1) {
+			dfs(newr, newc, level);
+		}
+	}
+}
+int main()
+{
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> map[i][j];
+		}
+	}
+	int level = 2;
+	int landcnt = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (!visited[i][j] && map[i][j] >= 1) {
+				dfs(i, j, level);
+				level++;
+				landcnt++;		//섬의 개수
+			}
+		}
+	}
+	findans(landcnt);
+	cout << ans << endl;
+	
+	return 0;
+}
