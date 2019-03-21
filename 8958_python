@@ -1,0 +1,12 @@
+n = int(input())
+for i in range(n):
+    s = input()
+    plus = 1
+    ans = 0
+    for j in range(len(s)):
+        if s[j] == 'O':
+            ans += plus
+            plus += 1
+        elif s[j] == 'X':
+            plus = 1
+    print(ans)
