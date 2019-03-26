@@ -1,0 +1,32 @@
+/* cin, cout으로 했을 땐 시간초과, 하지만 은탄환은 printf와 scanf였다. There is a Silver Bullet */
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct PAIR {
+	int x, y;
+};
+
+bool comp(PAIR a, PAIR b) {
+	if (a.x == b.x) {
+		return a.y < b.y;
+	}
+	else {
+		return a.x < b.x;
+	}
+	return a.x < b.x;
+}
+int main()
+{
+	int n;
+	PAIR pair[100000];
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		scanf("%d %d", &pair[i].x, &pair[i].y);
+	}
+	sort(pair, pair + n, comp);
+	for (int i = 0; i < n; i++) {
+		printf("%d %d\n", pair[i].x, pair[i].y);
+	}
+	return 0;
+}
