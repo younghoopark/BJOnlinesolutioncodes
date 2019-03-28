@@ -1,0 +1,12 @@
+def sol():
+    L = list(S)
+    for i in L:
+        for j in range(0,R):
+            print(i, end='')
+    print()
+
+T = int(input())
+for i in range(0,T):
+    R,S = input().split()
+    R = int(R)
+    sol()
