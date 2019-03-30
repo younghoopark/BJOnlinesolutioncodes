@@ -1,0 +1,20 @@
+if __name__ == "__main__":
+    s1, s2 = input().split()
+    
+    L1 = []
+    L2 = []
+    for i in range(len(s1)):
+        L1.append(s1[i])
+    for i in range(len(s2)):
+        L2.append(s2[i])
+
+    val1 = int(0)
+    val2 = int(0)
+    for i in range(len(L1)):
+        val1 += int(L1[i])*10**i
+    for i in range(len(L2)):
+        val2 += int(L2[i])*10**i
+    if val1 > val2:
+        print(val1)
+    else:
+        print(val2)
