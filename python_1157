@@ -1,0 +1,22 @@
+if __name__ == "__main__":
+    s = input()
+    S = s.upper()
+    dic = {}
+    for i in range(len(S)):
+        if (S[i] in dic) == True:
+            dic[S[i]] += 1
+        else:
+            dic[S[i]] = 1
+            
+    ans = "?"
+    L = dic.values()
+    maxv = max(L)
+    cnt = int(0)
+    for key, val in dic.items():
+        if val == maxv:
+            ans = key
+            cnt += 1
+    
+    if cnt != 1:
+        ans = "?"
+    print(ans)
