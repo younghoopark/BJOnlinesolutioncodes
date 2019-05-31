@@ -1,0 +1,49 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int N;
+int MAP[26][26] = { 0, };
+int visited[26][26] = { 0, };
+int udlr[4][2] = { {0,-1},{0,1},{-1,0},{1,0} };
+int totaldanji = 0;
+int ans[1000] = { 0, };
+
+bool comp(int a, int b) {
+	return a < b;
+}
+void dfs(int r, int c, int level) {
+	ans[level]++;
+	visited[r][c] = level;
+	int newr, newc;
+	for (int i = 0; i < 4; i++) {
+		newr = r + udlr[i][0], newc = c + udlr[i][1];
+		if (MAP[newr][newc] >= 1 && visited[newr][newc] == 0) {
+			dfs(newr, newc, level);
+		}
+	}
+}
+int main()
+{
+	scanf("%d", &N);
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			scanf("%1d", &MAP[i][j]);
+		}
+	}
+	int level = 1;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			if (MAP[i][j] >= 1 && visited[i][j] == 0) {
+				dfs(i, j, level++);
+				totaldanji += 1;
+			}
+		}
+	}
+	sort(ans, ans + totaldanji + 1, comp);
+	printf("%d\n", totaldanji);
+	for (int i = 1; i <= totaldanji; i++) {
+		printf("%d\n", ans[i]);
+	}
+	
+	return 0;
+}
