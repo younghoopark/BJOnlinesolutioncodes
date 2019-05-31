@@ -1,70 +1,49 @@
 #include <iostream>
-#include <algorithm>
-#include <deque>
-
+#include <queue>
 using namespace std;
 
-int N, M;
-int arr[101][101];
-int visited[101][101];
-int dir[4][2] = { {1,0}, {0,1}, {-1,0}, {0,-1} };	//down right up left
-int cnt = 0;
-deque<pair<pair<int, int>,int>> dq;
-bool is_in_the_map(int row, int col)
+struct vertex {
+	int r, c;
+	int level;
+};
+int MAP[101][101] = { 0, }, visited[101][101] = { 0, };
+int N, M, ans;
+int udlr[4][2] = { {0,-1},{0,1},{-1,0},{1,0} };
+queue<vertex> q;
+int main()
 {
-	if (row < 1 || row > N || col < 1 || col > M)
-	{
-		return false;
-	}
-	return true;
-}
-
-void bfs(int row, int col)
-{
-	int update_row, update_col, cnt;
-
-	visited[row][col] = 1;
-	dq.push_back(make_pair(make_pair(1,1),1));
-	
-	while (!dq.empty())
-	{
-		row = dq.front().first.first;
-		col = dq.front().first.second;
-		cnt = dq.front().second;
-		dq.pop_front();
-		if (row == N && col == M)
-		{
-			cout << cnt << endl;
-			return;
+	scanf("%d %d", &N, &M);
+	for (int i = 1; i <= N; i++) {
+		for (int j = 1; j <= M; j++) {
+			scanf("%1d", &MAP[i][j]);
 		}
+	}
 	
-		for (int i = 0; i < 4; i++)
-		{
-			update_row = row + dir[i][0];
-			update_col = col + dir[i][1];
-			if (is_in_the_map(update_row, update_col))
-			{
-				if (visited[update_row][update_col] == 0 && arr[update_row][update_col] == 1)
-				{
-					dq.push_back(make_pair(make_pair(update_row,update_col),cnt+1));
-					visited[update_row][update_col] = 1;
-				}
+	vertex v, tmp;
+	v.r = 1, v.c = 1, v.level = 1;
+	visited[1][1] = 1;
+	int newr, newc, newlevel;
+	q.push(v);
+	while (!q.empty()) {
+		v = q.front();
+		q.pop();
+		if (v.r == N && v.c == M) {
+			ans = v.level; break;
+		}
+		for (int i = 0; i < 4; i++) {
+			newr = v.r + udlr[i][0];
+			newc = v.c + udlr[i][1];
+			newlevel = v.level + 1;
+			if (newr < 1 || newr > N || newc < 1 || newc > M) {
+				continue;
+			}
+			if (MAP[newr][newc] == 1 && visited[newr][newc] == 0) {
+				visited[newr][newc] = 1;
+				tmp.r = newr, tmp.c = newc, tmp.level = newlevel;
+				q.push(tmp);
 			}
 		}
 	}
-}
-
-int main()
-{
-	cin >> N >> M;
-	for (int i = 1; i <= N; i++)
-	{
-		for (int j = 1; j <= M; j++)
-		{
-			scanf("%1d", &arr[i][j]);
-		}
-	}
-	bfs(1,1);
-
+	printf("%d\n", ans);
 	return 0;
 }
