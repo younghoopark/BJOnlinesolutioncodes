@@ -1,0 +1,14 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int price[5];
+	for (int i = 0; i < 5; i++) {
+		scanf("%d", &price[i]);
+	}
+	printf("%d\n", *min_element(price, price + 3) + *min_element(price + 3, price + 5) - 50);
+
+	return 0;
+}
