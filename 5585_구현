@@ -1,0 +1,38 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	int count = 0;
+	int n, m;
+	scanf("%d", &n);		//지불할 돈
+	m = 1000 - n;			//거스름 돈
+	while (m - 500> 0) {
+		m -= 500;
+		count++;
+	}
+	while (m - 100 >= 0) {
+		m -= 100;
+		count++;
+	}
+	while (m - 50 >= 0) {
+		m -= 50;
+		count++;
+	}
+	while (m - 10 >= 0) {
+		m -= 10;
+		count++;
+	}
+	while (m - 5 >= 0) {
+		m -= 5;
+		count++;
+	}
+	while (m - 1 >= 0) {
+		m -= 1;
+		count++;
+	}
+	printf("%d\n", count);
+
+	return 0;
+}
