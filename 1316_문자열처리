@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int ans = 0;
+void solution(int N, string s) {
+	int dif_flag = 0, same_flag = 0;
+	for (int i = 0; i < s.length(); i++) {
+		dif_flag = 0, same_flag = 0;
+		for (int j = i; j < s.length(); j++) {
+			if (s[i] != s[j]) {
+				dif_flag = 1; continue;
+			}
+			if (dif_flag == 1 && s[i] == s[j]) {
+				same_flag = 1; break;
+			}			
+		}
+		if (same_flag == 1 && dif_flag == 1) {
+			ans++; return;
+		}
+	}
+}
+int main()
+{
+	int N;
+	string word[101];
+	scanf("%d", &N);
+	for (int i = 0; i < N; i++) {
+		cin >> word[i];
+	}
+
+	for (int i = 0; i < N; i++) {
+		solution(N, word[i]);
+	}
+
+	printf("%d\n", N - ans);
+	return 0;
+}
